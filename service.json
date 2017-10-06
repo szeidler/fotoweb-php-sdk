@@ -1,0 +1,56 @@
+{
+  "name": "Fotoweb API",
+  "apiVersion": "8.0.795.0",
+  "baseUrl": "http://demo.fotoware.com",
+  "description": "API for accessing the Fotoweb API by Fotoware.",
+  "operations": {
+    "getApiDescriptor": {
+      "httpMethod": "GET",
+      "uri": "/fotoweb/me",
+      "summary": "Gets the client token",
+      "responseModel": "ApiDescriptorResponse",
+      "parameters": {
+        "headerAccept": {
+          "type": "string",
+          "location": "header",
+          "sentAs": "Accept",
+          "default": "application/vnd.fotoware.full-api-descriptor+json"
+        }
+      }
+    }
+  },
+  "models": {
+    "BaseResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "string",
+          "required": true
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "The error code."
+              },
+              "message": {
+                "type": "string",
+                "description": "The detailed message from the server."
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": {
+        "location": "json"
+      }
+    },
+    "ApiDescriptorResponse": {
+      "type": "object",
+      "extends": "BaseResponse"
+    }
+  }
+}
