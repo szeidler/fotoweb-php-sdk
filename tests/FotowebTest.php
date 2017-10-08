@@ -1,12 +1,13 @@
 <?php
 
-use Fotoweb\FotowebClient;
+namespace Fotoweb\Tests;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Command\ResultInterface;
 use GuzzleHttp\Command\Guzzle\Description;
-use \PHPUnit\Framework\TestCase;
+use Fotoweb\FotowebClient;
 
-class FotowebClientTest extends TestCase
+class FotowebTest extends FotowebTestWrapper
 {
 
     protected $client;
@@ -14,13 +15,6 @@ class FotowebClientTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-
-        $this->client = new FotowebClient(
-          [
-            'baseUrl'  => getenv('BASE_URL'),
-            'apiToken' => getenv('FULLAPI_KEY'),
-          ]
-        );
     }
 
     public function testCustomClientFromConfig()
@@ -116,12 +110,4 @@ class FotowebClientTest extends TestCase
         );
     }
 
-    public function testGetApiDescriptor()
-    {
-        $response = $this->client->getApiDescriptor();
-        $this->assertInstanceOf(ResultInterface::class, $response,
-          'The response is not a proper Guzzle result.');
-        $this->assertEquals('/fotoweb/me', $response->getHref(),
-          'The response should return the href of the resource.');
-    }
 }

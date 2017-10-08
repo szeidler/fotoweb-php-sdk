@@ -1,5 +1,7 @@
 <?php
 
+namespace Fotoweb\Tests\Authentication;
+
 use \PHPUnit\Framework\TestCase;
 use Fotoweb\Authentication\LoginTokenGenerator;
 
