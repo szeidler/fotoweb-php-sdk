@@ -13,7 +13,7 @@ class FotowebClientTest extends TestCase
     {
         parent::setUp();
 
-        $this->client = FotowebClient::create(
+        $this->client = new FotowebClient(
           [
             'baseUrl' => getenv('BASE_URL'),
             'apiToken' => getenv('FULLAPI_KEY'),
@@ -25,7 +25,6 @@ class FotowebClientTest extends TestCase
     {
         $response = $this->client->getApiDescriptor();
         $this->assertInstanceOf(ResultInterface::class, $response, 'The response is not a proper Guzzle result.');
-        $this->assertArrayHasKey('server', $response->toArray(), 'The response misses the server property.');
-        $this->assertArrayHasKey('version', $response->toArray(), 'The response misses the version property.');
+        $this->assertEquals('/fotoweb/me', $response->getHref(), 'The response should return the href of the resource.');
     }
 }
