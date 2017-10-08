@@ -32,7 +32,15 @@ class FotowebClient extends GuzzleClient
 
     private function getClientFromConfig(array $config)
     {
-        // TODO: Let user provide a client through $config.
+        // If a client was provided, return it.
+        if (isset($config['client'])) {
+            return $config['client'];
+        }
+
+        // Ensure, that a apiToken was provided.
+        if (empty($config['apiToken'])) {
+            throw new \InvalidArgumentException('A apiToken must be provided.');
+        }
 
         $client = new Client(
           [
@@ -47,7 +55,17 @@ class FotowebClient extends GuzzleClient
 
     private function getServiceDescriptionFromConfig(array $config)
     {
-        // TODO: Let user provide a full description through $config.
+        // If a description was provided, return it.
+        if (isset($config['description'])) {
+            return $config['description'];
+        }
+
+        // Ensure, that a baseUrl was provided.
+        if (empty($config['baseUrl'])) {
+            throw new \InvalidArgumentException('A baseUrl must be provided.');
+        }
+
+        // Create new description based of the stored JSON definition.
         $description = new Description(
           ['baseUrl' => $config['baseUrl']] + (array) json_decode(file_get_contents(__DIR__ . '/../service.json'), true)
         );
