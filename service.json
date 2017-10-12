@@ -17,6 +17,25 @@
           "default": "application/vnd.fotoware.full-api-descriptor+json"
         }
       }
+    },
+    "getAsset": {
+      "httpMethod": "GET",
+      "uri": "{href}",
+      "summary": "Gets an asset.",
+      "responseModel": "Fotoweb\\Representation\\Asset",
+      "parameters": {
+        "href": {
+          "type": "string",
+          "location": "uri",
+          "required": true
+        },
+        "headerAccept": {
+          "type": "string",
+          "location": "header",
+          "sentAs": "Accept",
+          "default": "application/vnd.fotoware.asset+json"
+        }
+      }
     }
   },
   "models": {
