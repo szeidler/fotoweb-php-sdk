@@ -55,6 +55,44 @@
           "default": "application/vnd.fotoware.assetlist+json"
         }
       }
+    },
+    "getArchive": {
+      "httpMethod": "GET",
+      "uri": "{href}",
+      "summary": "Gets an archive.",
+      "responseModel": "Fotoweb\\Representation\\Archive",
+      "parameters": {
+        "href": {
+          "type": "string",
+          "location": "uri",
+          "required": true
+        },
+        "headerAccept": {
+          "type": "string",
+          "location": "header",
+          "sentAs": "Accept",
+          "default": "application/vnd.fotoware.collection+json"
+        }
+      }
+    },
+    "getArchives": {
+      "httpMethod": "GET",
+      "uri": "{href}",
+      "summary": "Gets a list of archives.",
+      "responseModel": "Fotoweb\\Representation\\ArchiveList",
+      "parameters": {
+        "href": {
+          "type": "string",
+          "location": "uri",
+          "required": true
+        },
+        "headerAccept": {
+          "type": "string",
+          "location": "header",
+          "sentAs": "Accept",
+          "default": "application/vnd.fotoware.collectionlist+json"
+        }
+      }
     }
   },
   "models": {

@@ -5,14 +5,14 @@ namespace Fotoweb\Tests\Representation;
 use Fotoweb\Tests\FotowebTestWrapper;
 use GuzzleHttp\Command\ResultInterface;
 
-class AssetListTest extends FotowebTestWrapper
+class ArchiveListTest extends FotowebTestWrapper
 {
 
-    public function testGetAssetList()
+    public function testGetArchiveList()
     {
-        $href = getenv('ASSET_LIST_HREF');
+        $href = '/fotoweb/me/archives/';
 
-        $response = $this->client->getAssetList(['href' => $href]);
+        $response = $this->client->getArchives(['href' => $href]);
         $this->assertInstanceOf(ResultInterface::class, $response,
           'The response is not a proper Guzzle result.');
         $this->assertGreaterThan(0, $response->offsetGet('data'),
