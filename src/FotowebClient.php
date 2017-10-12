@@ -42,6 +42,9 @@ class FotowebClient extends GuzzleClient
             throw new \InvalidArgumentException('A apiToken must be provided.');
         }
 
+        // Ensure, that the apiToken is valid.
+        self::validateToken($config['apiToken']);
+
         $client = new Client(
           [
             'headers' => [
@@ -71,6 +74,17 @@ class FotowebClient extends GuzzleClient
         );
 
         return $description;
+    }
+
+    private static function validateToken($token)
+    {
+        if (!is_string($token)) {
+            throw new \InvalidArgumentException('The provided token is not a string.');
+        }
+        if (strlen($token) < 4) {
+            throw new \InvalidArgumentException('The provided token must be longer than 3 characters.');
+        }
+        return true;
     }
 
     private function responseToResultTransformer()

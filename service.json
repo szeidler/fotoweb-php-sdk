@@ -7,7 +7,7 @@
     "getApiDescriptor": {
       "httpMethod": "GET",
       "uri": "/fotoweb/me",
-      "summary": "Gets the client token",
+      "summary": "Gets the client token.",
       "responseModel": "Fotoweb\\Authentication\\ApiDescriptor",
       "parameters": {
         "headerAccept": {

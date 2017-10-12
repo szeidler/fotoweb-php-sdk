@@ -110,4 +110,58 @@ class FotowebTest extends FotowebTestWrapper
         );
     }
 
+    public function invalidTokens()
+    {
+        return [
+          'empty'        => [''],
+          'a'            => ['a'],
+          'ab'           => ['ab'],
+          'abc'          => ['abc'],
+          'digit'        => [1],
+          'double-digit' => [12],
+          'triple-digit' => [123],
+          'bool'         => [true],
+          'array'        => [['token']],
+        ];
+    }
+
+    public function validTokens()
+    {
+        return [
+          'token'      => ['token'],
+          'short-hash' => ['123456789'],
+          'full-hash'  => ['akrwejhtn983z420qrzc8397r4'],
+        ];
+    }
+
+
+    /**
+     * @dataProvider invalidTokens
+     * @expectedException InvalidArgumentException
+     */
+    public function testFotowebClientCreationRaisesExceptionOnInvalidToken($token)
+    {
+        $client = new FotowebClient(
+          [
+            'baseUrl' => getenv('BASE_URL'),
+            'apiToken' => $token,
+          ]
+        );
+    }
+
+    /**
+     * @dataProvider validTokens
+     */
+    public function testFotowebClientCreationSucceedsOnValidToken($token)
+    {
+        $client = new FotowebClient(
+          [
+            'baseUrl' => getenv('BASE_URL'),
+            'apiToken' => $token,
+          ]
+        );
+
+        $this->assertEquals($token, $client->getConfig('apiToken'), 'The returned token must match the original input token.');
+    }
+
 }
