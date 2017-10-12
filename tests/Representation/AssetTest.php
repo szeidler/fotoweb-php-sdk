@@ -17,6 +17,10 @@ class AssetTest extends FotowebTestWrapper
           'The response is not a proper Guzzle result.');
         $this->assertEquals($href, $response->getHref(),
           'The response should return the href of the given resource.');
+        $this->assertGreaterThan(0, $response->offsetGet('filesize'),
+          'The asset response should include a filesize.');
+        $this->assertNotEmpty($response->offsetGet('previews'),
+          'The asset response should have previews.');
     }
 
 }
