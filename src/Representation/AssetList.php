@@ -2,6 +2,6 @@
 
 namespace Fotoweb\Representation;
 
-class AssetList extends BaseRepresentation
+class AssetList extends BaseListRepresentation
 {
 }

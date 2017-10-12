@@ -10,7 +10,5 @@ interface FotowebResultInterface extends ResultInterface
     public function getData();
 
     public function setData(array $data);
-    
-    public function getHref();
 
 }
