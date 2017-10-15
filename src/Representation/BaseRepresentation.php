@@ -4,6 +4,11 @@ namespace Fotoweb\Representation;
 
 use Fotoweb\Response\FotowebResult;
 
+/**
+ * Defines an abstract representation for non-lists with own href property.
+ *
+ * @package Fotoweb\Representation
+ */
 abstract class BaseRepresentation extends FotowebResult
 {
 

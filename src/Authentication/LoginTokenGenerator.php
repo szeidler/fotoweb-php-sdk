@@ -5,7 +5,7 @@
 namespace Fotoweb\Authentication;
 
 /**
- * Class LoginTokenGenerator
+ * Generates login tokens for authenticated requests the Fotoweb API.
  *
  * @package Fotoweb\Authentication
  * @see https://bitbucket.org/fotoware/phplogintokengenerator
