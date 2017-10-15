@@ -41,7 +41,7 @@ your API testing credentials.
 
 Note: Currently the SDK does not use mocked responses, but does actual API calls.
 
-`vendor/bin/phpunit -c php unit.xml`
+`./vendor/bin/phpunit -c phpunit.xml`
 
 ## Credits
 
