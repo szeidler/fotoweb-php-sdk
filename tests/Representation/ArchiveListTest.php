@@ -5,9 +5,18 @@ namespace Fotoweb\Tests\Representation;
 use Fotoweb\Tests\FotowebTestWrapper;
 use GuzzleHttp\Command\ResultInterface;
 
+/**
+ * Tests the ArchiveList response model.
+ *
+ * @package Fotoweb\Tests\Representation
+ * @see \Fotoweb\Representation\ArchiveList
+ */
 class ArchiveListTest extends FotowebTestWrapper
 {
 
+    /**
+     * Tests, that the ArchiveList request returns a valid response.
+     */
     public function testGetArchiveList()
     {
         $href = '/fotoweb/me/archives/';

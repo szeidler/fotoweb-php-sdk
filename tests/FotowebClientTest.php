@@ -7,7 +7,13 @@ use GuzzleHttp\Command\ResultInterface;
 use GuzzleHttp\Command\Guzzle\Description;
 use Fotoweb\FotowebClient;
 
-class FotowebTest extends FotowebTestWrapper
+/**
+ * Tests the FotowebClient class.
+ *
+ * @package Fotoweb\Tests
+ * @see \Fotoweb\FotowebClient
+ */
+class FotowebClientTest extends FotowebTestWrapper
 {
 
     protected $client;
@@ -17,6 +23,9 @@ class FotowebTest extends FotowebTestWrapper
         parent::setUp();
     }
 
+    /**
+     * Tests, that a http client can be injected via the config array.
+     */
     public function testCustomClientFromConfig()
     {
         $base_uri = 'http://httpbin.org/';
@@ -36,6 +45,9 @@ class FotowebTest extends FotowebTestWrapper
           'The FotowebClient must return the base_uri of the injected Client.');
     }
 
+    /**
+     * Tests, that a service description can be injected via the config array.
+     */
     public function testCustomDescriptiontFromConfig()
     {
         $description = new Description([
@@ -87,6 +99,8 @@ class FotowebTest extends FotowebTestWrapper
     }
 
     /**
+     * Tests, that a missing baseUrl throws an exception.
+     *
      * @expectedException InvalidArgumentException
      */
     public function testMissingBaseUrlInClientConfiguration()
@@ -99,6 +113,8 @@ class FotowebTest extends FotowebTestWrapper
     }
 
     /**
+     * Tests, that a missing token throws an exception.
+     *
      * @expectedException InvalidArgumentException
      */
     public function testMissingTokenInClientConfiguration()
@@ -110,6 +126,11 @@ class FotowebTest extends FotowebTestWrapper
         );
     }
 
+    /**
+     * Dataprovider providing invalid tokens.
+     *
+     * @return array
+     */
     public function invalidTokens()
     {
         return [
@@ -125,6 +146,11 @@ class FotowebTest extends FotowebTestWrapper
         ];
     }
 
+    /**
+     * Dataprovider providing valid tokens.
+     *
+     * @return array
+     */
     public function validTokens()
     {
         return [
@@ -136,32 +162,37 @@ class FotowebTest extends FotowebTestWrapper
 
 
     /**
+     * Tests, that the client throws an exception on invalid tokens.
+     *
      * @dataProvider invalidTokens
      * @expectedException InvalidArgumentException
      */
-    public function testFotowebClientCreationRaisesExceptionOnInvalidToken($token)
-    {
+    public function testFotowebClientCreationRaisesExceptionOnInvalidToken(
+      $token
+    ) {
         $client = new FotowebClient(
           [
-            'baseUrl' => getenv('BASE_URL'),
+            'baseUrl'  => getenv('BASE_URL'),
             'apiToken' => $token,
           ]
         );
     }
 
     /**
+     * Tests, that the client is created successfully with valid tokens.
+     *
      * @dataProvider validTokens
      */
     public function testFotowebClientCreationSucceedsOnValidToken($token)
     {
         $client = new FotowebClient(
           [
-            'baseUrl' => getenv('BASE_URL'),
+            'baseUrl'  => getenv('BASE_URL'),
             'apiToken' => $token,
           ]
         );
 
-        $this->assertEquals($token, $client->getConfig('apiToken'), 'The returned token must match the original input token.');
+        $this->assertEquals($token, $client->getConfig('apiToken'),
+          'The returned token must match the original input token.');
     }
-
 }

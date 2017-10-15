@@ -1,7 +1,15 @@
 <?php
 
+namespace Fotoweb\Tests\Representation;
+
 use \PHPUnit\Framework\TestCase;
 
+/**
+ * Tests the abstract BaseRepresentation model.
+ *
+ * @package Fotoweb\Tests\Representation
+ * @see \Fotoweb\Representation\BaseRepresentation
+ */
 class BaseRepresentationTest extends TestCase
 {
 
@@ -17,11 +25,17 @@ class BaseRepresentationTest extends TestCase
         $this->baseRepresentation = $stub;
     }
 
+    /**
+     * Tests, that the data getter is getting the initialized data.
+     */
     public function testGetData()
     {
         $this->assertEquals($this->data, $this->baseRepresentation->getData(), 'The representation should return the initial data.');
     }
 
+    /**
+     * Test that the data setter is setting the data.
+     */
     public function testSetData()
     {
         $data = array('key3' => 'value3', 'key4' => 'value4');

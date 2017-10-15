@@ -5,9 +5,18 @@ namespace Fotoweb\Tests\Authentication;
 use \PHPUnit\Framework\TestCase;
 use Fotoweb\Authentication\LoginTokenGenerator;
 
+/**
+ * Tests the login token generation.
+ *
+ * @package Fotoweb\Tests\Authentication
+ * @see \Fotoweb\Authentication\LoginTokenGenerator
+ */
 class LoginTokenGeneratorTest extends TestCase
 {
 
+    /**
+     * Tests, that the LoginTokenGenerator returns valid user tokens.
+     */
     public function testLoginTokenGeneration()
     {
         $tokenGenerator = new LoginTokenGenerator('1234567abcdef', true);
