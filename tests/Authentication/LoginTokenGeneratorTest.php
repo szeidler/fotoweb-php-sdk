@@ -15,11 +15,28 @@ class LoginTokenGeneratorTest extends TestCase
 {
 
     /**
-     * Tests, that the LoginTokenGenerator returns valid user tokens.
+     * Dataprovider providing tokens to test the user token generation
+     *
+     * @return array
      */
-    public function testLoginTokenGeneration()
+    public function tokens()
     {
-        $tokenGenerator = new LoginTokenGenerator('1234567abcdef', true);
+        return [
+          'token'                 => ['token'],
+          'short-hash'            => ['123456789'],
+          'full-hash'             => ['akrwejhtn983z420qrzc8397r4'],
+          'token-with-utf8-chars' => ['%Ж$søäßanR$$7GЪCѢ YC'],
+        ];
+    }
+
+    /**
+     * Tests, that the LoginTokenGenerator returns valid user tokens.
+     *
+     * @dataProvider tokens
+     */
+    public function testLoginTokenGeneration($token)
+    {
+        $tokenGenerator = new LoginTokenGenerator($token, true);
         $loginToken = $tokenGenerator->CreateLoginToken('user1');
         $this->assertNotEmpty($loginToken,
           'The created login token must be non empty.');
