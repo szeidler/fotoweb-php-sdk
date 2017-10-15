@@ -9,7 +9,7 @@
         <env name="ASSET_HREF" value="/fotoweb/archives/5013-Demo%20assets/Artwork/Coffee%20from%20DAM/240x400.jpg.info"/>
     </php>
     <testsuites>
-        <testsuite name="Fotweb PHP SDK Test Suite">
+        <testsuite name="Fotoweb PHP SDK Test Suite">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
