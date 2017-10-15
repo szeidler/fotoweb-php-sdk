@@ -1,5 +1,7 @@
 # Fotoweb by fotoware.com PHP SDK
 
+[![Build Status](https://travis-ci.org/szeidler/fotoweb-php-sdk.svg?branch=master)](https://travis-ci.org/szeidler/fotoweb-php-sdk)
+
 Fotoweb PHP SDK utilizes [guzzle-services](https://github.com/guzzle/guzzle-services) for an easy integration with
 [Fotoware's](https://www.fotoware.com/) FotoWeb RESTful API.
 
