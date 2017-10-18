@@ -2,11 +2,13 @@
 
 namespace Fotoweb;
 
+use Fotoweb\Middleware\TokenMiddleware;
 use Fotoweb\Response\FotowebResult;
 use GuzzleHttp\Client;
 use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\Guzzle\Description;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
+use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -21,7 +23,7 @@ class FotowebClient extends GuzzleClient
     /**
      * FotowebClient constructor.
      *
-     * @param array $data
+     * @param array $config
      *   Holds the configuration to initialize the service client.
      */
     public function __construct(array $config = [])
@@ -34,6 +36,7 @@ class FotowebClient extends GuzzleClient
           null,
           $config
         );
+
     }
 
     /**
@@ -54,22 +57,10 @@ class FotowebClient extends GuzzleClient
             return $config['client'];
         }
 
-        // Ensure, that a apiToken was provided.
-        if (empty($config['apiToken'])) {
-            throw new \InvalidArgumentException('A apiToken must be provided.');
-        }
+        $stack = $this->initializeClientHandlerStack($config);
 
-        // Ensure, that the apiToken is valid.
-        self::validateToken($config['apiToken']);
-
-        // Create a Guzzle client based on the default configuration.
-        $client = new Client(
-          [
-            'headers' => [
-              'FWAPITOKEN' => $config['apiToken'],
-            ],
-          ]
-        );
+        // Create a Guzzle client.
+        $client = new Client(['handler' => $stack]);
 
         return $client;
     }
@@ -107,25 +98,21 @@ class FotowebClient extends GuzzleClient
     }
 
     /**
-     * Validates the token used for the API authentication.
+     * Initializes the basic client handler stack.
      *
-     * @param string $token
-     *   FWAPIToken for a Full Server-to-server API Authentication.
+     * @param array $config
+     *   Holds the configuration to initialize the service client.
      *
-     * @see https://learn.fotoware.com/02_FotoWeb_8.0/Developing_with_the_FotoWeb_API/01_The_FotoWeb_RESTful_API/03_API_Authentication
-     *
-     * @return bool
-     *   True if the provided token is valid.
+     * @return \GuzzleHttp\HandlerStack
      */
-    private static function validateToken($token)
+    private function initializeClientHandlerStack(array $config)
     {
-        if (!is_string($token)) {
-            throw new \InvalidArgumentException('The provided token is not a string.');
-        }
-        if (strlen($token) < 4) {
-            throw new \InvalidArgumentException('The provided token must be longer than 3 characters.');
-        }
-        return true;
+        $stack = HandlerStack::create();
+
+        // Adds the TokenMiddleware.
+        $stack->push(new TokenMiddleware($config));
+
+        return $stack;
     }
 
     /**
