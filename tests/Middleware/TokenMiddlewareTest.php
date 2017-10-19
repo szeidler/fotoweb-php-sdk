@@ -19,6 +19,17 @@ class FotowebClientTest extends FotowebTestWrapper
         parent::setUp();
     }
 
+    public function testTokenGetter()
+    {
+        $token = 'mytoken';
+        $middleware = new TokenMiddleware(['apiToken' => $token]);
+        $this->assertEquals($token, $middleware->getToken(), 'The token getter must return the right token');
+
+        $middleware = new TokenMiddleware();
+        $this->assertNull($middleware->getToken(),
+          'The token getter must return null, when it was initialized without a token.');
+    }
+
     /**
      * Dataprovider providing invalid tokens.
      *
@@ -60,7 +71,7 @@ class FotowebClientTest extends FotowebTestWrapper
      * @dataProvider invalidTokens
      * @expectedException InvalidArgumentException
      */
-    public function testFotowebClientCreationRaisesExceptionOnInvalidToken($token)
+    public function testTokenMiddlewareRaisesExceptionOnInvalidToken($token)
     {
         $middleware = new TokenMiddleware();
         $middleware->validateToken($token);
@@ -71,7 +82,7 @@ class FotowebClientTest extends FotowebTestWrapper
      *
      * @dataProvider validTokens
      */
-    public function testFotowebClientCreationSucceedsOnValidToken($token)
+    public function testTokenMiddlewareValidatesSuccessfullyOnValidToken($token)
     {
         $middleware = new TokenMiddleware();
         $this->assertTrue($middleware->validateToken($token), 'The token must be valid.');

@@ -38,16 +38,15 @@ class TokenMiddleware
     /**
      * Returns the token from the configuration.
      *
-     * @return string
+     * @return string|null
      */
     public function getToken()
     {
-        // Ensure, that a apiToken was provided.
-        if (empty($this->config['apiToken'])) {
-            throw new \InvalidArgumentException('A apiToken must be provided.');
+        if (!empty($this->config['apiToken'])) {
+            return $this->config['apiToken'];
+        } else {
+            return null;
         }
-
-        return $this->config['apiToken'];
     }
 
     /**
@@ -63,6 +62,9 @@ class TokenMiddleware
      */
     public function validateToken($token)
     {
+        if (empty($token)) {
+            throw new \InvalidArgumentException('A apiToken must be provided.');
+        }
         if (!is_string($token)) {
             throw new \InvalidArgumentException('The provided token is not a string.');
         }
