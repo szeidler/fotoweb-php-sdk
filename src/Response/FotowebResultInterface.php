@@ -25,5 +25,4 @@ interface FotowebResultInterface extends ResultInterface
      * @param array $data
      */
     public function setData(array $data);
-
 }

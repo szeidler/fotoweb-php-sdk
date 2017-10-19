@@ -29,14 +29,13 @@ class FotowebClient extends GuzzleClient
     public function __construct(array $config = [])
     {
         parent::__construct(
-          $this->getClientFromConfig($config),
-          $this->getServiceDescriptionFromConfig($config),
-          null,
-          $this->responseToResultTransformer(),
-          null,
-          $config
+            $this->getClientFromConfig($config),
+            $this->getServiceDescriptionFromConfig($config),
+            null,
+            $this->responseToResultTransformer(),
+            null,
+            $config
         );
-
     }
 
     /**
@@ -91,7 +90,11 @@ class FotowebClient extends GuzzleClient
 
         // Create new description based of the stored JSON definition.
         $description = new Description(
-          ['baseUrl' => $config['baseUrl']] + (array) json_decode(file_get_contents(__DIR__ . '/../service.json'), true)
+            ['baseUrl' => $config['baseUrl']]
+            + (array)json_decode(
+                file_get_contents(__DIR__ . '/../service.json'),
+                true
+            )
         );
 
         return $description;
