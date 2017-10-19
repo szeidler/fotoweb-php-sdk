@@ -19,6 +19,9 @@ class FotowebClientTest extends FotowebTestWrapper
         parent::setUp();
     }
 
+    /**
+     * Test, that the token getter returns the initialized token or null, if not provided.
+     */
     public function testTokenGetter()
     {
         $token = 'mytoken';
