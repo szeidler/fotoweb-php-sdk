@@ -37,6 +37,36 @@
         }
       }
     },
+    "updateMetadata": {
+      "httpMethod": "PATCH",
+      "uri": "{href}",
+      "summary": "Updates the metadata of an asset.",
+      "responseModel": "Fotoweb\\Representation\\Asset",
+      "parameters": {
+        "href": {
+          "type": "string",
+          "location": "uri",
+          "required": true
+        },
+        "metadata": {
+          "type": "array",
+          "location": "json",
+          "required": true
+        },
+        "headerContentType": {
+          "type": "string",
+          "location": "header",
+          "sentAs": "Content-Type",
+          "default": "application/vnd.fotoware.assetupdate+json"
+        },
+        "headerAccept": {
+          "type": "string",
+          "location": "header",
+          "sentAs": "Accept",
+          "default": "application/vnd.fotoware.asset+json"
+        }
+      }
+    },
     "getAssetList": {
       "httpMethod": "GET",
       "uri": "{href}",
