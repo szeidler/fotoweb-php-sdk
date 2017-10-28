@@ -46,12 +46,12 @@ class AssetTest extends FotowebTestWrapper
           'The response is not a proper Guzzle result.');
         $this->assertEquals($href, $response->getHref(),
           'The response should return the href of the given resource, that was updated.');
-        $this->assertEquals($metadata, $response->offsetGet('metadata'),
-          'Updated metadat we saved.');
+        $this->assertEquals($metadata[40], $response->offsetGet('metadata')[40],
+          'Updated metadata we saved.');
 
         // Double check, that the metadata was properly updated by fetching the asset again.
         $response = $this->client->getAsset(['href' => $href]);
-        $this->assertEquals($metadata, $response->offsetGet('metadata'),
+        $this->assertEquals($metadata[40], $response->offsetGet('metadata')[40],
           'Updated metadata must match the metadata we saved.');
     }
 }
