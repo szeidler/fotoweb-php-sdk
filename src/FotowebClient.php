@@ -58,8 +58,13 @@ class FotowebClient extends GuzzleClient
 
         $stack = $this->initializeClientHandlerStack($config);
 
+        // Ensure, that a baseUrl was provided.
+        if (empty($config['baseUrl'])) {
+            throw new \InvalidArgumentException('A baseUrl must be provided.');
+        }
+
         // Create a Guzzle client.
-        $client = new Client(['handler' => $stack]);
+        $client = new Client(['base_uri' => $config['baseUrl'], 'handler' => $stack]);
 
         return $client;
     }
@@ -141,5 +146,9 @@ class FotowebClient extends GuzzleClient
             // Or build a common FotowebResult object based on the response data.
             return new FotowebResult($data);
         };
+    }
+
+    public function getRendition($href) {
+        return $this->getHttpClient()->get($href);
     }
 }

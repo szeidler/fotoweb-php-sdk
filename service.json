@@ -70,7 +70,7 @@
     "getRenditionRequest": {
       "httpMethod": "POST",
       "uri": "{rendition_service}",
-      "summary": "Gets the renditions of an asset.",
+      "summary": "Gets the rendition request of an asset.",
       "responseModel": "Fotoweb\\Representation\\RenditionRequest",
       "parameters": {
         "rendition_service": {
