@@ -148,7 +148,16 @@ class FotowebClient extends GuzzleClient
         };
     }
 
-    public function getRendition($href) {
+    /**
+     * Returns the rendition for a given renditionResource href.
+     *
+     * @param $href
+     *   Rendition resource href.
+     *
+     * @return mixed
+     */
+    public function getRendition($href)
+    {
         return $this->getHttpClient()->get($href);
     }
 }
