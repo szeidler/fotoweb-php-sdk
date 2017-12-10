@@ -15,7 +15,7 @@ Fotoweb PHP SDK utilizes [guzzle-services](https://github.com/guzzle/guzzle-serv
 
 Add Fotoweb PHP SDK as a composer dependency.
 
-`composer require szeidler/fotoweb-php-sdk:dev-master`
+`composer require szeidler/fotoweb-php-sdk:^1.0`
 
 ## Usage
 
