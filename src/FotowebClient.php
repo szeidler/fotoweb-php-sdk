@@ -63,8 +63,20 @@ class FotowebClient extends GuzzleClient
             throw new \InvalidArgumentException('A baseUrl must be provided.');
         }
 
+        // Initialize client config.
+        $client_config = ['base_uri' => $config['baseUrl'], 'handler' => $stack];
+
+        // Apply provided client configuration, if available.
+        if (isset($config['client_config'])) {
+            // Ensure, the client_config is an array.
+            if (!is_array($config['client_config'])) {
+                throw new \InvalidArgumentException('A client_config must be an array.');
+            }
+            $client_config += $config['client_config'];
+        }
+
         // Create a Guzzle client.
-        $client = new Client(['base_uri' => $config['baseUrl'], 'handler' => $stack]);
+        $client = new Client($client_config);
 
         return $client;
     }
