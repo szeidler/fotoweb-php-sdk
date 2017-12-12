@@ -47,6 +47,50 @@ class FotowebClientTest extends FotowebTestWrapper
     }
 
     /**
+     * Test to add custom client configuration.
+     */
+    public function testCustomClientConfiguration()
+    {
+        // Create a custom client configuration.
+        $timeout = 2.0;
+        $proxy = 'socks5://10.254.254.254:8123';
+        $client_config = ['timeout' => $timeout, 'proxy' => $proxy];
+
+        // Inject the custom client as configuration into the FotowebClient.
+        $client = new FotowebClient(
+          [
+            'baseUrl'  => getenv('BASE_URL'),
+            'apiToken' => getenv('FULLAPI_KEY'),
+            'client_config' => $client_config,
+          ]
+        );
+
+        $this->assertEquals($timeout, $client->getHttpClient()->getConfig('timeout'),
+          'The FotowebClient must return the timeout value of the client configuration');
+        $this->assertEquals($proxy, $client->getHttpClient()->getConfig('proxy'),
+          'The FotowebClient must return the proxy value of the client configuration');
+    }
+
+    /**
+     * Test, that custom client configuration is an array.
+     *
+     * @expectedException InvalidArgumentException
+     */
+    public function testCustomClientConfigurationMustBeAnArray()
+    {
+        $client_config = 'socks5://10.254.254.254:8123';
+
+        // Inject the custom client as configuration into the FotowebClient.
+        $client = new FotowebClient(
+          [
+            'baseUrl'       => getenv('BASE_URL'),
+            'apiToken'      => getenv('FULLAPI_KEY'),
+            'client_config' => $client_config,
+          ]
+        );
+    }
+
+    /**
      * Tests, that a service description can be injected via the config array.
      */
     public function testCustomDescriptiontFromConfig()
@@ -111,5 +155,20 @@ class FotowebClientTest extends FotowebTestWrapper
             'apiToken' => getenv('FULLAPI_KEY'),
           ]
         );
+    }
+
+    /**
+     * Tests, that a missing api key throws an exception.
+     *
+     * @expectedException InvalidArgumentException
+     */
+    public function testMissingApiKeyInClientConfiguration()
+    {
+        $client = new FotowebClient(
+          [
+            'baseUrl' => 'http://httpbin.org/',
+          ]
+        );
+        $client->getHttpClient()->request('/');
     }
 }
