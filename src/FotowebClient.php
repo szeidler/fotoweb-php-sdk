@@ -9,6 +9,9 @@ use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\Guzzle\Description;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
 use GuzzleHttp\HandlerStack;
+use kamermans\OAuth2\GrantType\ClientCredentials;
+use kamermans\OAuth2\GrantType\RefreshToken;
+use kamermans\OAuth2\OAuth2Middleware;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -129,10 +132,73 @@ class FotowebClient extends GuzzleClient
     {
         $stack = HandlerStack::create();
 
-        // Adds the TokenMiddleware.
-        $stack->push(new TokenMiddleware($config));
+        // Provide backwards compatible authType.
+        if (empty($config['authType'])) {
+            $config['authType'] = 'token';
+        }
+
+        switch ($config['authType']) {
+            case 'oauth2':
+                $middleware = $this->getOAuth2Middleware($config);
+                $stack->push($middleware);
+                break;
+            case 'token':
+                $middleware = $this->getTokenMiddleware($config);
+                $stack->push($middleware);
+                break;
+        }
 
         return $stack;
+    }
+
+    /**
+     * Build a legacy token middleware.
+     *
+     * @param array $config
+     *   Holds the configuration to initialize the service client.
+     *
+     * @return \kamermans\OAuth2\OAuth2Middleware
+     *   The legacy token middleware.
+     */
+    private function getTokenMiddleware($config)
+    {
+        if (empty($config['apiToken'])) {
+            throw new \InvalidArgumentException('A apiToken must be provided, when using the token auth type.');
+        }
+        return new TokenMiddleware($config);
+    }
+
+    /**
+     * Build a oAuth2 middleware.
+     *
+     * @param array $config
+     *   Holds the configuration to initialize the service client.
+     *
+     * @return \kamermans\OAuth2\OAuth2Middleware
+     *   The oAuth2 middleware.
+     */
+    private function getOAuth2Middleware($config)
+    {
+        if (empty($config['clientId']) || empty($config['clientSecret'])) {
+            throw new \InvalidArgumentException('A clientId and clientSecret must be provided, when using the oauth2 auth type.');
+        }
+        $reauthClient = new Client([
+          'base_uri' => $config['baseUrl'] . '/fotoweb/oauth2/token',
+        ]);
+        $reauthConfig = [
+          'client_id' => $config['clientId'],
+          'client_secret' => $config['clientSecret'],
+        ];
+        $grantType = new ClientCredentials($reauthClient, $reauthConfig);
+        $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
+        $middleware = new OAuth2Middleware($grantType, $refreshGrantType);
+
+        // Add a persistence provider, if configured.
+        if (isset($config['persistenceProvider'])) {
+            $middleware->setTokenPersistence($config['persistenceProvider']);
+        }
+
+        return $middleware;
     }
 
     /**

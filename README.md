@@ -7,7 +7,7 @@ Fotoweb PHP SDK utilizes [guzzle-services](https://github.com/guzzle/guzzle-serv
 
 ## Requirements
 
-* PHP 5.6.0 or greater (PHP 7 recommended)
+* PHP 7.1 or greater
 * Composer
 * Guzzle
 
@@ -24,9 +24,22 @@ Returns the asset representation based on the resource url of the asset.
 ```php
 use Fotoweb\FotowebClient;
 
+// Using the legacy API code method.
+
 $client = new FotowebClient([
     'baseUrl'  => 'https://demo.fotoware.com',
-    'apiToken' => 'UHDuXw',
+    'authType' => 'token',
+    'apiToken' => 'yourapi token',
+]);
+
+// Using oAuth2
+
+$client = new FotowebClient([
+    'baseUrl'  => 'https://demo.fotoware.com',
+    'authType' => 'oauth2',
+    'clientId' => 'your client id',
+    'clientSecret' => 'your client secret',
+    'persistenceProvider' => new \kamermans\OAuth2\Persistence\NullTokenPersistence(),
 ]);
 
 $href = '/fotoweb/archives/5013-Demo%20assets/Artwork/Coffee%20from%20DAM/240x400.jpg.info';

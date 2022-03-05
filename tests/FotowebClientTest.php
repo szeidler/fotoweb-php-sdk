@@ -38,6 +38,7 @@ class FotowebClientTest extends FotowebTestWrapper
           [
             'client'   => $custom_client,
             'baseUrl'  => getenv('BASE_URL'),
+            'authType' => getenv('AUTH_TYPE'),
             'apiToken' => getenv('FULLAPI_KEY'),
           ]
         );
