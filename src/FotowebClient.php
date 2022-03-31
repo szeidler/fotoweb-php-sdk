@@ -3,15 +3,18 @@
 namespace Fotoweb;
 
 use Fotoweb\Middleware\TokenMiddleware;
+use Fotoweb\OAuth2\GrantType\AuthorizationCodeWithPkce;
 use Fotoweb\Response\FotowebResult;
 use GuzzleHttp\Client;
 use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\Guzzle\Description;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
 use GuzzleHttp\HandlerStack;
+use kamermans\OAuth2\GrantType\AuthorizationCode;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\GrantType\RefreshToken;
 use kamermans\OAuth2\OAuth2Middleware;
+use kamermans\OAuth2\Signer\ClientCredentials\PostFormData;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -163,7 +166,7 @@ class FotowebClient extends GuzzleClient
     private function getTokenMiddleware($config)
     {
         if (empty($config['apiToken'])) {
-            throw new \InvalidArgumentException('A apiToken must be provided, when using the token auth type.');
+            //throw new \InvalidArgumentException('A apiToken must be provided, when using the token auth type.');
         }
         return new TokenMiddleware($config);
     }
@@ -189,13 +192,22 @@ class FotowebClient extends GuzzleClient
           'client_id' => $config['clientId'],
           'client_secret' => $config['clientSecret'],
         ];
-        $grantType = new ClientCredentials($reauthClient, $reauthConfig);
-        $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
-        $middleware = new OAuth2Middleware($grantType, $refreshGrantType);
 
-        // Add a persistence provider, if configured.
-        if (isset($config['persistenceProvider'])) {
-            $middleware->setTokenPersistence($config['persistenceProvider']);
+        // We use different grant types for API requests and user initiated
+        // ones.
+        if ($config['grantType'] === 'authorization_code') {
+          $reauthConfig['code'] = $config['authorizationCode'] ?? NULL;
+          $reauthConfig['code_verifier'] = $config['codeVerifier'] ?? NULL;
+          $reauthConfig['redirect_uri'] = $config['redirectUri'] ?? NULL;
+          $grantType = new AuthorizationCodeWithPkce($reauthClient, $reauthConfig);
+          $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
+          $middleware = new OAuth2Middleware($grantType, $refreshGrantType);
+        }
+        else {
+          $grantType = new ClientCredentials($reauthClient, $reauthConfig);
+          $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
+          $clientCredentialsSigner = new PostFormData();
+          $middleware = new OAuth2Middleware($grantType, $refreshGrantType, $clientCredentialsSigner);
         }
 
         return $middleware;
