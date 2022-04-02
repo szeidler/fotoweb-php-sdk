@@ -32,11 +32,24 @@ $client = new FotowebClient([
     'apiToken' => 'yourapi token',
 ]);
 
-// Using oAuth2
+// Using oAuth2 with client credentials (Web API)
 
 $client = new FotowebClient([
     'baseUrl'  => 'https://demo.fotoware.com',
     'authType' => 'oauth2',
+    'grantType' => 'client_credentials',
+    'clientId' => 'your client id',
+    'clientSecret' => 'your client secret',
+    'persistenceProvider' => new \kamermans\OAuth2\Persistence\NullTokenPersistence(),
+]);
+
+// Using oAuth2 with authorization_code (Web API)
+$client = new FotowebClient([
+    'baseUrl'  => 'https://demo.fotoware.com',
+    'authType' => 'oauth2',
+    'grantType' => 'authorization_code',
+    'codeVerifier' => 'PKCE code verifier',
+    'redirectUri' => 'your oauth2 redirect callback',
     'clientId' => 'your client id',
     'clientSecret' => 'your client secret',
     'persistenceProvider' => new \kamermans\OAuth2\Persistence\NullTokenPersistence(),
