@@ -14,6 +14,7 @@ use kamermans\OAuth2\GrantType\AuthorizationCode;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\GrantType\RefreshToken;
 use kamermans\OAuth2\OAuth2Middleware;
+use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
 use kamermans\OAuth2\Signer\ClientCredentials\PostFormData;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -201,13 +202,20 @@ class FotowebClient extends GuzzleClient
           $reauthConfig['redirect_uri'] = $config['redirectUri'] ?? NULL;
           $grantType = new AuthorizationCodeWithPkce($reauthClient, $reauthConfig);
           $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
-          $middleware = new OAuth2Middleware($grantType, $refreshGrantType);
+          $clientCredentialsSigner = new PostFormData();
+          $middleware = new OAuth2Middleware($grantType, $refreshGrantType, $clientCredentialsSigner);
+          if (isset($config['persistenceProvider'])) {
+            $middleware->setTokenPersistence($config['persistenceProvider']);
+          }
         }
         else {
           $grantType = new ClientCredentials($reauthClient, $reauthConfig);
           $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
           $clientCredentialsSigner = new PostFormData();
           $middleware = new OAuth2Middleware($grantType, $refreshGrantType, $clientCredentialsSigner);
+          if (isset($config['persistenceProvider'])) {
+            $middleware->setTokenPersistence($config['persistenceProvider']);
+          }
         }
 
         return $middleware;

@@ -3,15 +3,34 @@
 namespace Fotoweb\OAuth2\GrantType;
 
 use GuzzleHttp\ClientInterface;
-use kamermans\OAuth2\GrantType\AuthorizationCode;
+use kamermans\OAuth2\GrantType\GrantTypeInterface;
+use kamermans\OAuth2\Signer\ClientCredentials\SignerInterface;
 use kamermans\OAuth2\Utils\Collection;
+use kamermans\OAuth2\Utils\Helper;
 
 /**
  * Authorization code grant type with PKCE support.
  *
+ * Mostly taken over from kamermans\OAuth2\GrantType\AuthorizationCode, but
+ * due to private properties we could not use it.
+ *
  * @link http://tools.ietf.org/html/rfc6749#section-4.1
  */
-class AuthorizationCodeWithPkce extends AuthorizationCode {
+class AuthorizationCodeWithPkce implements GrantTypeInterface {
+
+  /**
+   * The token endpoint client.
+   *
+   * @var ClientInterface
+   */
+  protected $client;
+
+  /**
+   * Configuration settings.
+   *
+   * @var Collection
+   */
+  protected $config;
 
   /**
    * {@inheritdoc}
@@ -33,6 +52,22 @@ class AuthorizationCodeWithPkce extends AuthorizationCode {
         'code_verifier',
       ]
     );
+  }
+
+  public function getRawData(SignerInterface $clientCredentialsSigner, $refreshToken = NULL) {
+    $request = (new \GuzzleHttp\Psr7\Request('POST', $this->client->getConfig()['base_uri']))
+      ->withBody($this->getPostBody())
+      ->withHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    $request = $clientCredentialsSigner->sign(
+      $request,
+      $this->config['client_id'],
+      $this->config['client_secret']
+    );
+
+    $response = $this->client->send($request);
+
+    return json_decode($response->getBody(), TRUE);
   }
 
   /**
