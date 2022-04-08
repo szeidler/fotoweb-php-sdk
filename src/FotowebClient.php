@@ -15,6 +15,7 @@ use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\GrantType\RefreshToken;
 use kamermans\OAuth2\OAuth2Middleware;
 use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
+use kamermans\OAuth2\Signer\AccessToken\QueryString;
 use kamermans\OAuth2\Signer\ClientCredentials\PostFormData;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -26,6 +27,13 @@ use Psr\Http\Message\ResponseInterface;
  */
 class FotowebClient extends GuzzleClient
 {
+
+  /**
+   * The authentication middleware, if there is any.
+   *
+   * @var object
+   */
+  protected $authenticationMiddleware;
 
     /**
      * FotowebClient constructor.
@@ -145,14 +153,26 @@ class FotowebClient extends GuzzleClient
             case 'oauth2':
                 $middleware = $this->getOAuth2Middleware($config);
                 $stack->push($middleware);
+                $this->authenticationMiddleware = $middleware;
                 break;
             case 'token':
                 $middleware = $this->getTokenMiddleware($config);
                 $stack->push($middleware);
+                $this->authenticationMiddleware = $middleware;
                 break;
         }
 
         return $stack;
+    }
+
+  /**
+   * Get the authentication middleware, if there is any.
+   *
+   * @return object
+   *   The authentication middleware.
+   */
+    public function getAuthenticationMiddleware() {
+      return $this->authenticationMiddleware;
     }
 
     /**
@@ -212,7 +232,8 @@ class FotowebClient extends GuzzleClient
           $grantType = new ClientCredentials($reauthClient, $reauthConfig);
           $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
           $clientCredentialsSigner = new PostFormData();
-          $middleware = new OAuth2Middleware($grantType, $refreshGrantType, $clientCredentialsSigner);
+          $accessTokenSigner = new QueryString();
+          $middleware = new OAuth2Middleware($grantType, $refreshGrantType, $clientCredentialsSigner, $accessTokenSigner);
           if (isset($config['persistenceProvider'])) {
             $middleware->setTokenPersistence($config['persistenceProvider']);
           }
