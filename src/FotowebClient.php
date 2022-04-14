@@ -5,6 +5,7 @@ namespace Fotoweb;
 use Fotoweb\Middleware\TokenMiddleware;
 use Fotoweb\OAuth2\GrantType\AuthorizationCodeWithPkce;
 use Fotoweb\Response\FotowebResult;
+use Fotoweb\Serializer\GuzzleSerializer;
 use GuzzleHttp\Client;
 use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\Guzzle\Description;
@@ -43,10 +44,11 @@ class FotowebClient extends GuzzleClient
      */
     public function __construct(array $config = [])
     {
+      $description = $this->getServiceDescriptionFromConfig($config);
         parent::__construct(
             $this->getClientFromConfig($config),
-            $this->getServiceDescriptionFromConfig($config),
-            null,
+            $description,
+            new GuzzleSerializer($description),
             $this->responseToResultTransformer(),
             null,
             $config
