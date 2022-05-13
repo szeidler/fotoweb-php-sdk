@@ -11,12 +11,10 @@ use GuzzleHttp\Command\CommandInterface;
 use GuzzleHttp\Command\Guzzle\Description;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
 use GuzzleHttp\HandlerStack;
-use kamermans\OAuth2\GrantType\AuthorizationCode;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\GrantType\RefreshToken;
 use kamermans\OAuth2\OAuth2Middleware;
-use kamermans\OAuth2\Persistence\TokenPersistenceInterface;
-use kamermans\OAuth2\Signer\AccessToken\QueryString;
+use kamermans\OAuth2\Signer\AccessToken\BearerAuth;
 use kamermans\OAuth2\Signer\ClientCredentials\PostFormData;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -234,7 +232,7 @@ class FotowebClient extends GuzzleClient
           $grantType = new ClientCredentials($reauthClient, $reauthConfig);
           $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
           $clientCredentialsSigner = new PostFormData();
-          $accessTokenSigner = new QueryString();
+          $accessTokenSigner = new BearerAuth();
           $middleware = new OAuth2Middleware($grantType, $refreshGrantType, $clientCredentialsSigner, $accessTokenSigner);
           if (isset($config['persistenceProvider'])) {
             $middleware->setTokenPersistence($config['persistenceProvider']);
