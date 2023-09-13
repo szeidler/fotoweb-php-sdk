@@ -16,8 +16,7 @@ class BaseRepresentationTest extends TestCase
     protected $baseRepresentation;
     protected $data;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         parent::setUp();
 
         $this->data = array('key1' => 'value1', 'key2' => 'value2');

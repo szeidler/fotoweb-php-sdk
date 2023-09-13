@@ -14,8 +14,7 @@ use Fotoweb\Tests\FotowebTestWrapper;
 class FotowebClientTest extends FotowebTestWrapper
 {
 
-    public function setUp()
-    {
+    public function setUp(): void {
         parent::setUp();
     }
 

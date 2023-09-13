@@ -18,8 +18,7 @@ class FotowebClientTest extends FotowebTestWrapper
 
     protected $client;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         parent::setUp();
     }
 
@@ -74,12 +73,11 @@ class FotowebClientTest extends FotowebTestWrapper
 
     /**
      * Test, that custom client configuration is an array.
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testCustomClientConfigurationMustBeAnArray()
     {
-        $client_config = 'socks5://10.254.254.254:8123';
+      $this->expectException(\InvalidArgumentException::class);
+      $client_config = 'socks5://10.254.254.254:8123';
 
         // Inject the custom client as configuration into the FotowebClient.
         $client = new FotowebClient(
@@ -101,7 +99,7 @@ class FotowebClientTest extends FotowebTestWrapper
           'operations' => [
             'testing' => [
               'httpMethod'    => 'GET',
-              'uri'           => '/get{?foo}',
+              'uri'           => '/{foo}',
               'responseModel' => 'getResponse',
               'parameters'    => [
                 'foo' => [
@@ -140,18 +138,17 @@ class FotowebClientTest extends FotowebTestWrapper
         // Our custom description doesn't provide a custom ResponseModel class,
         // so it should fallback to Fotoweb\Response\FotowebResult.
         $this->assertInstanceOf('Fotoweb\Response\FotowebResult',
-          $client->testing(['foo' => 'bar', 'bar' => 'foo']),
+          $client->testing(['foo' => 'get', 'bar' => 'foo']),
           'The response must be instance of FotowebResult.');
     }
 
     /**
      * Tests, that a missing baseUrl throws an exception.
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testMissingBaseUrlInClientConfiguration()
     {
-        $client = new FotowebClient(
+      $this->expectException(\InvalidArgumentException::class);
+      $client = new FotowebClient(
           [
             'apiToken' => getenv('FULLAPI_KEY'),
           ]
@@ -160,12 +157,11 @@ class FotowebClientTest extends FotowebTestWrapper
 
     /**
      * Tests, that a missing api key throws an exception.
-     *
-     * @expectedException InvalidArgumentException
      */
     public function testMissingApiKeyInClientConfiguration()
     {
-        $client = new FotowebClient(
+      $this->expectException(\InvalidArgumentException::class);
+      $client = new FotowebClient(
           [
             'baseUrl' => 'http://httpbin.org/',
           ]
