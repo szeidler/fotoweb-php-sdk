@@ -11,7 +11,7 @@ use Fotoweb\Tests\FotowebTestWrapper;
  * @package Fotoweb\Tests\Middleware
  * @see     \Fotoweb\Middleware\TokenMiddleware
  */
-class FotowebClientTest extends FotowebTestWrapper
+class TokenMiddlewareTest extends FotowebTestWrapper
 {
 
     public function setUp(): void {
