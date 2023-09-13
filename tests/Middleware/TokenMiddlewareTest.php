@@ -37,20 +37,20 @@ class TokenMiddlewareTest extends FotowebTestWrapper
      *
      * @return array
      */
-    public function invalidTokens()
-    {
-        return [
-          'empty'        => [''],
-          'a'            => ['a'],
-          'ab'           => ['ab'],
-          'abc'          => ['abc'],
-          'digit'        => [1],
-          'double-digit' => [12],
-          'triple-digit' => [123],
-          'bool'         => [true],
-          'array'        => [['token']],
-        ];
-    }
+  public static function invalidTokens()
+  {
+      return [
+        'empty'        => [''],
+        'a'            => ['a'],
+        'ab'           => ['ab'],
+        'abc'          => ['abc'],
+        'digit'        => [1],
+        'double-digit' => [12],
+        'triple-digit' => [123],
+        'bool'         => [true],
+        'array'        => [['token']],
+      ];
+  }
 
     /**
      * Dataprovider providing valid tokens.
@@ -71,11 +71,12 @@ class TokenMiddlewareTest extends FotowebTestWrapper
      * Tests, that the client throws an exception on invalid tokens.
      *
      * @dataProvider invalidTokens
-     * @expectedException InvalidArgumentException
+     *
      */
     public function testTokenMiddlewareRaisesExceptionOnInvalidToken($token)
     {
-        $middleware = new TokenMiddleware();
+      $this->expectException(\InvalidArgumentException::class);
+      $middleware = new TokenMiddleware();
         $middleware->validateToken($token);
     }
 
