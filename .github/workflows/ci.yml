@@ -11,6 +11,7 @@ jobs:
       max-parallel: 1
       matrix:
         php: ['7.4', '8.0', '8.1', '8.2']
+        guzzle: ['^6.0', '^7.0']
 
     steps:
       - name: Setup PHP
@@ -20,6 +21,9 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Require Guzzle
+        run: composer require guzzlehttp/guzzle:${{ matrix.guzzle }} --no-update
 
       - name: Install dependencies
         run: composer update --no-interaction --no-progress
