@@ -10,8 +10,7 @@ class FotowebTestWrapper extends TestCase
 
     protected $client;
 
-    public function setUp()
-    {
+    public function setUp(): void {
         parent::setUp();
 
         $this->client = new FotowebClient(

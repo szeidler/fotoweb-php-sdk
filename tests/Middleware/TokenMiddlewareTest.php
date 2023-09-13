@@ -11,11 +11,10 @@ use Fotoweb\Tests\FotowebTestWrapper;
  * @package Fotoweb\Tests\Middleware
  * @see     \Fotoweb\Middleware\TokenMiddleware
  */
-class FotowebClientTest extends FotowebTestWrapper
+class TokenMiddlewareTest extends FotowebTestWrapper
 {
 
-    public function setUp()
-    {
+    public function setUp(): void {
         parent::setUp();
     }
 
@@ -38,7 +37,7 @@ class FotowebClientTest extends FotowebTestWrapper
      *
      * @return array
      */
-    public function invalidTokens()
+    public static function invalidTokens()
     {
         return [
           'empty'        => [''],
@@ -58,7 +57,7 @@ class FotowebClientTest extends FotowebTestWrapper
      *
      * @return array
      */
-    public function validTokens()
+    public static function validTokens()
     {
         return [
           'token'      => ['token'],
@@ -72,11 +71,12 @@ class FotowebClientTest extends FotowebTestWrapper
      * Tests, that the client throws an exception on invalid tokens.
      *
      * @dataProvider invalidTokens
-     * @expectedException InvalidArgumentException
+     *
      */
     public function testTokenMiddlewareRaisesExceptionOnInvalidToken($token)
     {
-        $middleware = new TokenMiddleware();
+      $this->expectException(\InvalidArgumentException::class);
+      $middleware = new TokenMiddleware();
         $middleware->validateToken($token);
     }
 

@@ -24,8 +24,8 @@ class ArchiveTest extends FotowebTestWrapper
         $response = $this->client->getArchive(['href' => $href]);
         $this->assertInstanceOf(ResultInterface::class, $response,
           'The response is not a proper Guzzle result.');
-        $this->assertEquals($href, $response->offsetGet('data'),
-          'The response should return the requested href as a data property.');
+        $this->assertEquals($href, $response->offsetGet('href'),
+          'The response should return the requested href as a href property.');
         $this->assertNotEmpty($response->offsetGet('name'),
           'The response should return a name.');
     }

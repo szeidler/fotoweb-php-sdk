@@ -19,7 +19,7 @@ class LoginTokenGeneratorTest extends TestCase
      *
      * @return array
      */
-    public function tokens()
+    public static function tokens()
     {
         return [
           'token'                 => ['token'],
