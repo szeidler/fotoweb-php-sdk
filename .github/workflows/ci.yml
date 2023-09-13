@@ -6,6 +6,7 @@ on:
 jobs:
   test:
     name: Run tests
+    environment: test
     runs-on: ubuntu-22.04
     strategy:
       matrix:
