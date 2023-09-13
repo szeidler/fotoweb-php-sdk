@@ -1,13 +1,13 @@
 # Fotoweb by fotoware.com PHP SDK
 
-[![Build Status](https://travis-ci.org/szeidler/fotoweb-php-sdk.svg?branch=master)](https://travis-ci.org/szeidler/fotoweb-php-sdk)
+![Build Status](https://github.com/szeidler/fotoweb-php-sdk/actions/workflows/ci.yml/badge.svg)
 
 Fotoweb PHP SDK utilizes [guzzle-services](https://github.com/guzzle/guzzle-services) for an easy integration with
 [Fotoware's](https://www.fotoware.com/) FotoWeb RESTful API.
 
 ## Requirements
 
-* PHP 7.1 or greater
+* PHP 7.4 or greater
 * Composer
 * Guzzle
 
@@ -15,7 +15,7 @@ Fotoweb PHP SDK utilizes [guzzle-services](https://github.com/guzzle/guzzle-serv
 
 Add Fotoweb PHP SDK as a composer dependency.
 
-`composer require szeidler/fotoweb-php-sdk:^1.0`
+`composer require szeidler/fotoweb-php-sdk:^2.0`
 
 ## Usage
 
