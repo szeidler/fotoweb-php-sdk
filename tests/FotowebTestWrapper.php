@@ -17,7 +17,6 @@ class FotowebTestWrapper extends TestCase
           [
             'baseUrl'  => getenv('BASE_URL'),
             'apiToken' => getenv('FULLAPI_KEY'),
-            'client_config' => ['verify' => FALSE],
           ]
         );
     }
