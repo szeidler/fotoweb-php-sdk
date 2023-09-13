@@ -37,27 +37,27 @@ class TokenMiddlewareTest extends FotowebTestWrapper
      *
      * @return array
      */
-  public static function invalidTokens()
-  {
-      return [
-        'empty'        => [''],
-        'a'            => ['a'],
-        'ab'           => ['ab'],
-        'abc'          => ['abc'],
-        'digit'        => [1],
-        'double-digit' => [12],
-        'triple-digit' => [123],
-        'bool'         => [true],
-        'array'        => [['token']],
-      ];
-  }
+    public static function invalidTokens()
+    {
+        return [
+          'empty'        => [''],
+          'a'            => ['a'],
+          'ab'           => ['ab'],
+          'abc'          => ['abc'],
+          'digit'        => [1],
+          'double-digit' => [12],
+          'triple-digit' => [123],
+          'bool'         => [true],
+          'array'        => [['token']],
+        ];
+    }
 
     /**
      * Dataprovider providing valid tokens.
      *
      * @return array
      */
-    public function validTokens()
+    public static function validTokens()
     {
         return [
           'token'      => ['token'],
