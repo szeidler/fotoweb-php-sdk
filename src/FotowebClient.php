@@ -281,7 +281,7 @@ class FotowebClient extends GuzzleClient
         while ($retries < $max_retries) {
             $response = $this->getHttpClient()->get($href); 
             if ($response->getStatusCode() === 200) {
-                return $response;
+                return $response;
             }
             $retries++;
             sleep(1);
