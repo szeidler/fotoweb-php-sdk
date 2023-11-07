@@ -275,8 +275,17 @@ class FotowebClient extends GuzzleClient
      *
      * @return mixed
      */
-    public function getRendition($href)
+    public function getRendition($href, int $max_retries = 10)
     {
-        return $this->getHttpClient()->get($href);
+        $retries = 0;
+        while ($retries < $max_retries) {
+            $response = $this->getHttpClient()->get($href); 
+            if ($response->getStatusCode() === 200) {
+                return $response;
+            }
+            $retries++;
+            sleep(1);
+        }
+        return $response;
     }
 }
