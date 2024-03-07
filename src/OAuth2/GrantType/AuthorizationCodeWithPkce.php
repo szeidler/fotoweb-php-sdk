@@ -3,6 +3,7 @@
 namespace Fotoweb\OAuth2\GrantType;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Utils;
 use kamermans\OAuth2\GrantType\GrantTypeInterface;
 use kamermans\OAuth2\Signer\ClientCredentials\SignerInterface;
 use kamermans\OAuth2\Utils\Collection;
@@ -89,7 +90,7 @@ class AuthorizationCodeWithPkce implements GrantTypeInterface {
       $data['redirect_uri'] = $this->config['redirect_uri'];
     }
 
-    return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
+    return Utils::streamFor(http_build_query($data, '', '&'));
   }
 
 }
