@@ -28,15 +28,13 @@ class LoginTokenGenerator {
         $endTime = gmdate("Y-m-d H:i:s", strtotime("+30 minutes"));
         $token = sprintf('s=%s;e=%s;w=%s;u=%s;', $startTime, $endTime, $this->_useForWidgets ? 'true' : 'false', $username);
         $token .= 'm=' . $this->CreateStringMac($token) . ';';
-        $utf8String = utf8_encode($token);
-        return base64_encode($utf8String);
+        return base64_encode($token);
     }
 
     private function CreateStringMac( $data )
     {
         $data = $data . 'es=' . $this->_es;
-        $dataAsUtf8 = utf8_encode($data);
-        $mac = md5($dataAsUtf8, true);
+        $mac = md5($data, true);
         return base64_encode($mac);
     }
 }
