@@ -209,6 +209,10 @@ class FotowebClient extends GuzzleClient
         $reauthClient = new Client([
           'base_uri' => $config['baseUrl'] . '/fotoweb/oauth2/token',
         ]);
+        $refreshTokenClient = new Client([
+          'base_uri' => $config['baseUrl'] . '/fotoweb/oauth2/token',
+          'headers' => ['Accept' => 'application/json'],
+        ]);
         $reauthConfig = [
           'client_id' => $config['clientId'],
           'client_secret' => $config['clientSecret'],
@@ -221,7 +225,7 @@ class FotowebClient extends GuzzleClient
           $reauthConfig['code_verifier'] = $config['codeVerifier'] ?? NULL;
           $reauthConfig['redirect_uri'] = $config['redirectUri'] ?? NULL;
           $grantType = new AuthorizationCodeWithPkce($reauthClient, $reauthConfig);
-          $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
+          $refreshGrantType = new RefreshToken($refreshTokenClient, $reauthConfig);
           $clientCredentialsSigner = new PostFormData();
           $middleware = new OAuth2Middleware($grantType, $refreshGrantType, $clientCredentialsSigner);
           if (isset($config['persistenceProvider'])) {
@@ -230,7 +234,7 @@ class FotowebClient extends GuzzleClient
         }
         else {
           $grantType = new ClientCredentials($reauthClient, $reauthConfig);
-          $refreshGrantType = new RefreshToken($reauthClient, $reauthConfig);
+          $refreshGrantType = new RefreshToken($refreshTokenClient, $reauthConfig);
           $clientCredentialsSigner = new PostFormData();
           $accessTokenSigner = new BearerAuth();
           $middleware = new OAuth2Middleware($grantType, $refreshGrantType, $clientCredentialsSigner, $accessTokenSigner);
