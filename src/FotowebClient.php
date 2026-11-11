@@ -122,7 +122,7 @@ class FotowebClient extends GuzzleClient
 
         // Create new description based of the stored JSON definition.
         $description = new Description(
-            ['baseUrl' => $config['baseUrl']]
+            ['baseUri' => $config['baseUrl']]
             + (array)json_decode(
                 file_get_contents(__DIR__ . '/../service.json'),
                 true
@@ -256,8 +256,8 @@ class FotowebClient extends GuzzleClient
         return function (ResponseInterface $response, RequestInterface $request, CommandInterface $command) {
             $commandName = $command->getName();
             $model = self::getDescription()->getOperation($commandName)->getResponseModel();
-            $data = \GuzzleHttp\json_decode($response->getBody(), true);
-            parse_str($request->getBody(), $data['_request']);
+            $data = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+            parse_str((string) $request->getBody(), $data['_request']);
 
             // Use a specific response model class, if available.
             if (class_exists($model)) {

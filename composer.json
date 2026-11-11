@@ -6,7 +6,7 @@
     "require": {
         "php": ">=7.4",
         "psr/http-message": "^1.1 || ^2.0",
-        "guzzlehttp/guzzle-services": "^1.1",
+        "guzzlehttp/guzzle-services": "^1.1 || ^2.0",
         "kamermans/guzzle-oauth2-subscriber": "^1.0"
     },
     "require-dev": {
